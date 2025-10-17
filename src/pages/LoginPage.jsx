@@ -1,15 +1,20 @@
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { use } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const LoginPage = () => {
   const { googlePopupSignin, signInWithEmail, setUserData, forgotPass } =
     use(AuthContext);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const handleGoogleSignIn = () => {
     googlePopupSignin()
       .then((userInfo) => {
         const user = userInfo.user;
         setUserData(user);
+        navigate(location.state || "/");
       })
       .catch((error) => {
         const errorMsg = error.message;
@@ -26,6 +31,7 @@ const LoginPage = () => {
       .then((userInfo) => {
         const user = userInfo.user;
         console.log(user);
+        navigate(location.state || "/");
       })
       .catch((error) => {
         const errorMsg = error.message;
@@ -33,7 +39,6 @@ const LoginPage = () => {
       });
 
     //! forgot pass
-
     forgotPass(email);
   };
 

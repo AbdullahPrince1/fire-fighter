@@ -5,7 +5,12 @@ import { use } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
-  const { userData } = use(AuthContext);
+  const { user, signOutUser } = use(AuthContext);
+  const signOutBtn = () => {
+    signOutUser().then(() => {
+      alert("Sign Out Successful");
+    });
+  };
   return (
     <div className="bg-slate-100f py-2 border-b border-b-slate-300 ">
       <MyContainer className="flex items-center justify-between">
@@ -23,12 +28,19 @@ const Navbar = () => {
             <MyLink to={"/profile"}>Profile</MyLink>
           </li>
         </ul>
-        <div>
-          <img src={userData.photoURL} alt="" className="w-[55px]" />
+        <div className="space-x-6">
+          <button className="bg-purple-500 text-white px-4 py-2 rounded-md font-semibold cursor-pointer">
+            <Link to={"/login"}>Log in</Link>
+          </button>
+          {user && (
+            <button
+              onClick={signOutBtn}
+              className="bg-green-500 text-white px-4 py-2 rounded-md font-semibold cursor-pointer"
+            >
+              Sign Out
+            </button>
+          )}
         </div>
-        <button className="bg-purple-500 text-white px-4 py-2 rounded-md font-semibold cursor-pointer">
-          <Link to={"/login"}>Log in</Link>
-        </button>
       </MyContainer>
     </div>
   );
